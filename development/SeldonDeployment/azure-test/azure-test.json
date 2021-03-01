@@ -1,0 +1,61 @@
+{
+    "kind": "SeldonDeployment",
+    "apiVersion": "machinelearning.seldon.io/v1alpha2",
+    "metadata": {
+        "name": "azure-test",
+        "namespace": "development",
+        "creationTimestamp": null,
+        "labels": {
+            "fluentd": "true"
+        }
+    },
+    "spec": {
+        "name": "azure-test",
+        "predictors": [
+            {
+                "name": "default",
+                "graph": {
+                    "name": "azure-test-container",
+                    "implementation": "XGBOOST_SERVER",
+                    "modelUri": "https://seldon.blob.core.windows.net/xgboost-model?sp=r\u0026st=2021-03-01T18:36:13Z\u0026se=2021-03-02T02:36:13Z\u0026sv=2020-02-10\u0026sr=c\u0026sig=dCfXKXEeSSA4GvZUPsfMXt2H1uw0KKNcisbXLXQOhWs%3D",
+                    "logger": {
+                        "mode": "all"
+                    }
+                },
+                "componentSpecs": [
+                    {
+                        "metadata": {
+                            "creationTimestamp": "2021-03-01T18:36:59Z"
+                        },
+                        "spec": {
+                            "containers": [
+                                {
+                                    "name": "azure-test-container",
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "1",
+                                            "memory": "1Gi"
+                                        },
+                                        "requests": {
+                                            "cpu": "1",
+                                            "memory": "1Gi"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "engineResources": {},
+                "svcOrchSpec": {},
+                "traffic": 100
+            }
+        ],
+        "annotations": {
+            "seldon.io/engine-seldon-log-messages-externally": "true"
+        },
+        "protocol": "seldon"
+    },
+    "status": {}
+}
