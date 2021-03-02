@@ -1,0 +1,53 @@
+{
+    "kind": "SeldonDeployment",
+    "apiVersion": "machinelearning.seldon.io/v1alpha2",
+    "metadata": {
+        "name": "azure-tester",
+        "namespace": "development",
+        "creationTimestamp": null,
+        "labels": {
+            "fluentd": "true"
+        }
+    },
+    "spec": {
+        "name": "azure-tester",
+        "predictors": [
+            {
+                "name": "default",
+                "graph": {
+                    "name": "azure-tester-container",
+                    "implementation": "XGBOOST_SERVER",
+                    "modelUri": "https://seldon.blob.core.windows.net/xgboost-model/model.bst",
+                    "serviceAccountName": "azure-blob",
+                    "logger": {
+                        "mode": "all"
+                    }
+                },
+                "componentSpecs": [
+                    {
+                        "metadata": {
+                            "creationTimestamp": "2021-03-02T08:46:05Z"
+                        },
+                        "spec": {
+                            "containers": [
+                                {
+                                    "name": "azure-tester-container",
+                                    "resources": {}
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "engineResources": {},
+                "svcOrchSpec": {},
+                "traffic": 100
+            }
+        ],
+        "annotations": {
+            "seldon.io/engine-seldon-log-messages-externally": "true"
+        },
+        "protocol": "seldon"
+    },
+    "status": {}
+}
