@@ -18,12 +18,12 @@
                 "graph": {
                     "name": "iris-classifier-container",
                     "type": "MODEL",
-                    "implementation": "SKLEARN_SERVER",
+                    "implementation": "XGBOOST_SERVER",
                     "endpoint": {
                         "service_host": "localhost",
                         "service_port": 9000
                     },
-                    "modelUri": "gs://seldon-models/sklearn/iris",
+                    "modelUri": "gs://seldon-models/xgboost/iris",
                     "logger": {
                         "mode": "all"
                     }
@@ -31,13 +31,13 @@
                 "componentSpecs": [
                     {
                         "metadata": {
-                            "creationTimestamp": "2021-03-05T10:36:12Z"
+                            "creationTimestamp": "2021-02-05T11:54:35Z"
                         },
                         "spec": {
                             "containers": [
                                 {
                                     "name": "iris-classifier-container",
-                                    "image": "seldonio/sklearnserver:1.5.0",
+                                    "image": "seldonio/xgboostserver:1.5.0",
                                     "ports": [
                                         {
                                             "name": "metrics",
@@ -45,16 +45,7 @@
                                             "protocol": "TCP"
                                         }
                                     ],
-                                    "resources": {
-                                        "limits": {
-                                            "cpu": "1",
-                                            "memory": "1Gi"
-                                        },
-                                        "requests": {
-                                            "cpu": "1",
-                                            "memory": "1Gi"
-                                        }
-                                    },
+                                    "resources": {},
                                     "volumeMounts": [
                                         {
                                             "name": "seldon-podinfo",
@@ -67,12 +58,23 @@
                     }
                 ],
                 "replicas": 1,
+                "annotations": {
+                    "seldon.io/canary": "false"
+                },
                 "engineResources": {},
                 "labels": {
                     "version": "default"
                 },
                 "svcOrchSpec": {},
-                "traffic": 100
+                "traffic": 100,
+                "explainer": {
+                    "type": "AnchorTabular",
+                    "modelUri": "gs://tom-seldon-examples/xgboost/",
+                    "containerSpec": {
+                        "name": "",
+                        "resources": {}
+                    }
+                }
             }
         ],
         "annotations": {
