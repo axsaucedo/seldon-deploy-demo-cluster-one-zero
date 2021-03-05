@@ -6,7 +6,6 @@
         "namespace": "development",
         "creationTimestamp": null,
         "labels": {
-            "app.kubernetes.io/instance": "seldon-deploy-demo-cluster-one-zero-development",
             "fluentd": "true"
         }
     },
@@ -66,7 +65,7 @@
                     "version": "default"
                 },
                 "svcOrchSpec": {},
-                "traffic": 100,
+                "traffic": 80,
                 "explainer": {
                     "type": "AnchorTabular",
                     "modelUri": "gs://tom-seldon-examples/xgboost/",
@@ -75,6 +74,48 @@
                         "resources": {}
                     }
                 }
+            },
+            {
+                "name": "canary",
+                "graph": {
+                    "name": "iris-classifier-container",
+                    "implementation": "SKLEARN_SERVER",
+                    "modelUri": "gs://seldon-models/sklearn/iris",
+                    "logger": {
+                        "mode": "all"
+                    }
+                },
+                "componentSpecs": [
+                    {
+                        "metadata": {
+                            "creationTimestamp": "2021-03-05T10:36:12Z"
+                        },
+                        "spec": {
+                            "containers": [
+                                {
+                                    "name": "iris-classifier-container",
+                                    "resources": {
+                                        "limits": {
+                                            "cpu": "1",
+                                            "memory": "1Gi"
+                                        },
+                                        "requests": {
+                                            "cpu": "1",
+                                            "memory": "1Gi"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "annotations": {
+                    "seldon.io/canary": "true"
+                },
+                "engineResources": {},
+                "svcOrchSpec": {},
+                "traffic": 20
             }
         ],
         "annotations": {
